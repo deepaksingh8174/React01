@@ -1,0 +1,5 @@
+.main-app {
+  height: 100vh;
+  display: flex;
+  gap: 80px;
+}
