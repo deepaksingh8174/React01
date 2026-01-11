@@ -13,7 +13,7 @@ const Header = ({setSearch}) => {
     <header className='header'>
         <div className='header-path'>Home  
           <img className='header-arrow' src={rightArrow} alt="right arrow" />
-           <div className="header-sub-path">Documents</div>
+           <div className="text-gray-400">Documents</div>
          </div>
         <div className="icon-detail">
             <h1 className='header-h1'> My Documents</h1>

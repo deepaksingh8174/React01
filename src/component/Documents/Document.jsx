@@ -51,8 +51,13 @@ const Document = ({search}) => {
                 </thead>
                 <tbody className='document-body'>
                     {filteredDocuments.map((doc, index) => (
-                        <tr key={index}><td><input type="checkbox" /></td>
-                        <td>{doc.name}</td><td>{doc.status}</td><td>{doc.lastModified}</td>
+                        <tr key={index}>
+                        <td><input type="checkbox" /></td>
+                        <td>{doc.name}</td>
+                        <td className='flex items-center'>
+                            <button className={`p-1 rounded-3xl text-white text-center mt-2 cursor-pointer ${doc.status === 'Needs Signing' ? 'bg-neptune-500' : doc.status === 'Pending' ? 'bg-gray-300 text-black' : 'bg-green-400 text-black'}`}> {doc.status}</button>
+                        </td>
+                        <td>{doc.lastModified}</td>
                          <td>
                              <button className='document-button'>{doc.status === 'Needs Signing' ? 'Sign Now' : doc.status === 'Pending' ? 'Preview' : 'Download PDF'}</button>
                         </td>
