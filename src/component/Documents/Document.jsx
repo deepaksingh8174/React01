@@ -1,33 +1,40 @@
-import React from 'react';
+import React, { useState } from "react";
+import deleteIcon from '../../assets/delete.png';
 import './document.css';
 
-const documents = [
-  { name: 'Title of Document Goes Here', status: 'Needs Signing', lastModified: '2023-10-01' },
-  { name: 'Title of Document Goes Here', status: 'Pending', lastModified: '2023-10-02' },
-  { name: 'Title of Document Goes Here', status: 'Completed', lastModified: '2023-10-03' },
-  { name: 'Title of Document Goes Here', status: 'Needs Signing', lastModified: '2023-10-01' },
-  { name: 'Title of Document Goes Here', status: 'Pending', lastModified: '2023-10-02' },
-  { name: 'Title of Document Goes Here', status: 'Completed', lastModified: '2023-10-03' },
-  { name: 'Title of Document Goes Here', status: 'Needs Signing', lastModified: '2023-10-01' },
-  { name: 'Title of Document Goes Here', status: 'Pending', lastModified: '2023-10-02' },
-  { name: 'Title of Document Goes Here', status: 'Completed', lastModified: '2023-10-03' },
-  { name: 'Title of Document Goes Here', status: 'Needs Signing', lastModified: '2023-10-01' },
-  { name: 'Title of Document Goes Here', status: 'Pending', lastModified: '2023-10-02' },
-  { name: 'Title of Document Goes Here', status: 'Completed', lastModified: '2023-10-03' },
-  { name: 'Title of Document Goes Here', status: 'Needs Signing', lastModified: '2023-10-01' },
-  { name: 'Testing89', status: 'Pending', lastModified: '2023-10-02' },
-  { name: 'Testing67', status: 'Completed', lastModified: '2023-10-03' },
-  { name: 'Testing1234', status: 'Needs Signing', lastModified: '2023-10-01' },
-  { name: 'Testing45', status: 'Pending', lastModified: '2023-10-02' },
-  { name: 'testing123', status: 'Completed', lastModified: '2023-10-03' },
-  { name: 'Testing', status: 'Needs Signing', lastModified: '2023-10-01' },
-  { name: 'test', status: 'Pending', lastModified: '2023-10-02' },
-  { name: 'Title of Document Goes Name', status: 'Completed', lastModified: '2023-10-03' },
-];
 
 
 
-const Document = ({search}) => {
+
+const Document = ({search, documents, setDocuments}) => {
+
+
+const [editingIndexes, setEditingIndexes] = useState([]);
+const [tempNames, setTempNames] = useState({});
+
+  const handleEdit = (index, name) => {
+    setEditingIndexes([...editingIndexes, index]);
+    setTempNames({ ...tempNames, [index]: name });
+  };
+
+  const handleSave = (index) => {
+    const updatedDocs = [...documents];
+    updatedDocs[index].name = tempNames[index];
+    setDocuments(updatedDocs);
+
+    setEditingIndexes(editingIndexes.filter((i) => i !== index));
+    const { [index]: removed, ...rest } = tempNames;
+    setTempNames(rest);
+  };
+
+  const handleChange = (index, value) => {
+    setTempNames({ ...tempNames, [index]: value });
+  };
+
+ const handleDelete = (index) => {
+    setDocuments(documents.filter((_, i) => i !== index));
+  };
+
 
   let filteredDocuments = documents;
   if (search) {
@@ -35,6 +42,9 @@ const Document = ({search}) => {
         doc.name.toLowerCase().includes(search.toLowerCase())
     );
   }
+
+
+ 
 
   return (
     <>
@@ -50,22 +60,63 @@ const Document = ({search}) => {
                     </tr>
                 </thead>
                 <tbody className='document-body'>
-                    {filteredDocuments.map((doc, index) => (
-                        <tr key={index}>
-                        <td><input type="checkbox" /></td>
-                        <td>{doc.name}</td>
-                        <td className='flex items-center'>
-                            <button className={`p-1 rounded-3xl text-white text-center mt-2 cursor-pointer ${doc.status === 'Needs Signing' ? 'bg-neptune-500' : doc.status === 'Pending' ? 'bg-gray-300 text-black' : 'bg-green-400 text-black'}`}> {doc.status}</button>
-                        </td>
-                        <td>{doc.lastModified}</td>
-                         <td>
-                             <button className='document-button'>{doc.status === 'Needs Signing' ? 'Sign Now' : doc.status === 'Pending' ? 'Preview' : 'Download PDF'}</button>
-                        </td>
-                        </tr>
-                    ))}
-                </tbody>
+                   {filteredDocuments.map((doc, index) => {
+            const isEditing = editingIndexes.includes(index);
+            return (
+              <tr key={index} className="border-b hover:bg-gray-50">
+                <td className="border px-4 py-2 text-center">
+                  <input type="checkbox" />
+                </td>
+
+                <td className="border px-4 py-2">
+                  {isEditing ? (
+                    <input
+                      type="text"
+                      value={tempNames[index]}
+                      onChange={(e) => handleChange(index, e.target.value)}
+                      className="border px-2 py-1 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    />
+                  ) : (
+                    doc.name
+                  )}
+                </td>
+
+                <td className="border px-4 py-2">{doc.status}</td>
+                <td className="border px-4 py-2">{doc.lastModified}</td>
+
+                <td className="border px-4 py-2 flex gap-10">
+                  {isEditing ? (
+                    <button
+                      onClick={() => handleSave(index)}
+                      className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
+                    >
+                      Save
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleEdit(index, doc.name)}
+                      className="bg-yellow-400 px-3 py-1 rounded hover:bg-yellow-500"
+                    >
+                      Edit
+                    </button>
+                  )}
+                  
+                  {!isEditing && (
+                    <button
+                      onClick={() => handleDelete(index)}
+                      className="p-1 rounded hover:bg-red-100"
+                      title="Delete"
+                    >
+                      <img src={deleteIcon} alt="Delete" className="h-5 w-5" />
+                    </button>
+                  )}
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
             </table> 
-        </div>
+        </div>  
     </>
   )
 }
