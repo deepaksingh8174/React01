@@ -3,7 +3,16 @@ import deleteIcon from '../../assets/delete.png';
 import './document.css';
 
 
-
+  const getStatusClasses = (status) => {
+    switch (status.toLowerCase()) {
+      case "pending":
+        return "bg-gray-300 px-3 py-1 rounded-full text-sm font-semibold";
+      case "completed":
+        return "bg-green-400 px-3 py-1 rounded-full text-sm font-semibold";
+        case "needs signing":
+        return "bg-neptune-500 text-white px-3 py-1 rounded-full text-sm font-semibold";
+    }
+  }
 
 
 const Document = ({search, documents, setDocuments}) => {
@@ -81,10 +90,14 @@ const [tempNames, setTempNames] = useState({});
                   )}
                 </td>
 
-                <td className="border px-4 py-2">{doc.status}</td>
+                <td className="border px-4 py-2 cursor-pointer">
+                  <span className={getStatusClasses(doc.status)}>
+                    {doc.status}
+                  </span>
+                </td>
                 <td className="border px-4 py-2">{doc.lastModified}</td>
 
-                <td className="border px-4 py-2 flex gap-10">
+                <td className="px-4 py-2 flex gap-10">
                   {isEditing ? (
                     <button
                       onClick={() => handleSave(index)}
