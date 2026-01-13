@@ -1,5 +1,4 @@
-import React, { useState, useRef } from "react";
-import deleteIcon from '../../assets/delete.png';
+import React, { useState } from "react";
 import './document.css';
 
 
@@ -11,6 +10,17 @@ import './document.css';
         return "bg-green-400 px-3 py-1 rounded-full text-sm font-semibold";
         case "needs signing":
         return "bg-neptune-500 text-white px-3 py-1 rounded-full text-sm font-semibold";
+    }
+  }
+
+  const getbuttonStatus = (status) => {
+    switch (status.toLowerCase()) {
+      case "pending":
+        return "Preview";
+      case "completed":
+        return "Download PDF";
+      case "needs signing":
+        return "Sign Now";
     }
   }
 
@@ -93,14 +103,14 @@ const Document = ({ documents, setDocuments }) => {
 
 
 
-    <div className="table-wrapper">
-            <table className='document-table outline-none'>
-                <thead>
+    <div className="table-wrapper ">
+            <table className='document-table outline-none table-fixed w-full border-collapse'>
+                <thead className="text-center bg-gray-200 border-b">
                     <tr>
-                        <th><input type="checkbox" /></th>
-                        <th>Document Name</th>
-                        <th>Status</th>
-                        <th>Last Modified</th>
+                        <th className="text-center w-full"><input type="checkbox" /></th>
+                        <th className="w-1/3">Document Name</th>
+                        <th className="">Status</th>
+                        <th className="w-28">Last Modified</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -112,7 +122,7 @@ const Document = ({ documents, setDocuments }) => {
                   <input type="checkbox" />
                 </td>
 
-                <td className="border px-4 py-2">
+                <td className="border px-4 py-2 w-full  text-wrap ">
                   {doc.name}
                 </td>
 
@@ -121,7 +131,13 @@ const Document = ({ documents, setDocuments }) => {
                     {doc.status}
                   </span>
                 </td>
-                <td className="border px-4 py-2">{doc.lastModified}</td>
+                <td className="border px-4 py-1">{doc.lastModified}</td>
+
+                <td className='px-3 py-2'>
+                   <button className="w-[140px] h-[40px] px-4 py-2 bg-gray-200 text-white-600 font-semibold text-sm rounded-md shadow hover:bg-gray-300">
+                    {getbuttonStatus(doc.status)}
+                  </button>
+                </td>
 
                 <td className="px-4 py-2 flex gap-10">
                   <button onClick={() => handleEditButton(doc) } className="w-[90px] h-[40px] bg-blue-400 text-white font-semibold text-sm rounded-md shadow hover:bg-blue-500">

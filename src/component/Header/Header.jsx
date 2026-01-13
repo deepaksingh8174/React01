@@ -4,13 +4,38 @@ import searchIcon from '../../assets/search.png'
 import rightArrow from '../../assets/rightIcon.png'
 
 
+
+const date = new Date("2025-10-01T01:00:00");
+
+const formattedDate = date
+  .toLocaleString("en-IN", {
+    day: "numeric",
+    month: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true
+  })
+  .replace(",", "")
+  .toLowerCase();
+
+console.log("formattedDate:", formattedDate);
+
+
 function insertDocument(docName) {
     const existingDocuments = JSON.parse(localStorage.getItem("documents"))  || [];
     const newDocument = {
         id : Math.floor(Math.random() * 100),
         name: docName,
         status: "Pending",
-        lastModified: new Date().toLocaleDateString(),
+        lastModified: new Date().toLocaleDateString("en-IN", {
+                                                                day: "numeric",
+                                                                month: "numeric",
+                                                                year: "numeric",
+                                                                hour: "numeric",
+                                                                minute: "2-digit",
+                                                                hour12: true
+                                                            }).replace(",", "").toLowerCase(),
     };
     const updatedDocuments = [...existingDocuments, newDocument];
     localStorage.setItem("documents", JSON.stringify(updatedDocuments));
