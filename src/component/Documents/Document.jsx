@@ -66,7 +66,15 @@ const Document = ({ documents, setDocuments }) => {
         return {
           ...doc,
           name: editedData.name,
-          status: editedData.status
+          status: editedData.status,
+          lastModified: new Date().toLocaleDateString("en-IN", {
+                                                                day: "numeric",
+                                                                month: "numeric",
+                                                                year: "numeric",
+                                                                hour: "numeric",
+                                                                minute: "2-digit",
+                                                                hour12: true
+                                                            }).replace(",", "").toLowerCase()
         };
       }
       return doc;
@@ -96,42 +104,48 @@ const Document = ({ documents, setDocuments }) => {
             <option className={getStatusClasses("Completed")} value="Completed">Completed</option>
             <option className={getStatusClasses("Needs Signing")} value="Needs Signing">Needs Signing</option>
           </select>
-          <button disabled={!editedData.name.trim() || !editedData.status.trim()} onClick={handleSaveButton} className='w-[140px] h-[40px] bg-green-400 text-white font-semibold text-sm rounded-md shadow hover:bg-green-500' >Save</button>
+          <button disabled={!editedData.name.trim() || !editedData.status.trim()} onClick={handleSaveButton} className={`w-[140px] h-[40px] text-white font-semibold text-sm rounded-md shadow transition
+                                                                                                                  ${
+                                                                                                                    !editedData.name.trim() || !editedData.status.trim()
+                                                                                                                      ? "bg-gray-400 cursor-not-allowed opacity-60"
+                                                                                                                      : "bg-green-400 hover:bg-green-500"
+                                                                                                                  }`} >
+              Save</button>
           <button onClick = {handleCancelButton} className="w-[140px] h-[40px] bg-red-400 text-white font-semibold text-sm rounded-md shadow hover:bg-red-500"> Cancel</button>
         </div>
       )}
 
 
 
-    <div className="table-wrapper ">
+     <div className="table-wrapper ">
             <table className='document-table outline-none table-fixed w-full border-collapse'>
                 <thead className="text-center bg-gray-200 border-b">
                     <tr>
-                        <th className="text-center w-full"><input type="checkbox" /></th>
+                        <th className="text-center w-full px-4"><input type="checkbox" /></th>
                         <th className="w-1/3">Document Name</th>
-                        <th className="">Status</th>
-                        <th className="w-28">Last Modified</th>
+                        <th className="px-8">Status</th>
+                        <th className="w-28 ">Last Modified</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody className='document-body'>
-                   {documents.map((doc) => {
+                   {documents.map((doc) => {  
             return (
-              <tr key={doc.id} className="border-b hover:bg-gray-50">
-                <td className="border px-4 py-2 text-center">
+              <tr key={doc.id} >
+                <td className=" px-4 py-2 text-center">
                   <input type="checkbox" />
                 </td>
 
-                <td className="border px-4 py-2 w-full  text-wrap ">
+                <td className=" px-4 py-2 w-full  text-wrap ">
                   {doc.name}
                 </td>
 
-                <td className="border px-4 py-2 cursor-pointer">
+                <td className=" px-4 py-2 cursor-pointer">
                   <span className={getStatusClasses(doc.status)}>
                     {doc.status}
                   </span>
                 </td>
-                <td className="border px-4 py-1">{doc.lastModified}</td>
+                <td className=" px-4 py-1">{doc.lastModified}</td>
 
                 <td className='px-3 py-2'>
                    <button className="w-[140px] h-[40px] px-4 py-2 bg-gray-200 text-white-600 font-semibold text-sm rounded-md shadow hover:bg-gray-300">
@@ -139,7 +153,7 @@ const Document = ({ documents, setDocuments }) => {
                   </button>
                 </td>
 
-                <td className="px-4 py-2 flex gap-10">
+                <td className="px-4 py-2 flex gap-5">
                   <button onClick={() => handleEditButton(doc) } className="w-[90px] h-[40px] bg-blue-400 text-white font-semibold text-sm rounded-md shadow hover:bg-blue-500">
                       Edit
                   </button>
