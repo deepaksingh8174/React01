@@ -65,16 +65,6 @@ const Document = ({ documents, setDocuments }) => {
     setDocuments(updatedDocuments);
     setIsEditEnabled(false);
   }
-
-
-
-
-
-
-
-
-
-
  
 
   return (
@@ -96,15 +86,15 @@ const Document = ({ documents, setDocuments }) => {
             <option className={getStatusClasses("Completed")} value="Completed">Completed</option>
             <option className={getStatusClasses("Needs Signing")} value="Needs Signing">Needs Signing</option>
           </select>
-          <button onClick={handleSaveButton} className='w-[140px] h-[40px] bg-blue-400 text-white-300 font-medium text-sm rounded-md shadow hover:bg-blue-500' >Save</button>
-          <button onClick = {handleCancelButton} className="w-[140px] h-[40px] bg-red-400 text-white-300 font-medium text-sm rounded-md shadow hover:bg-red-500"> Cancel</button>
+          <button onClick={handleSaveButton} className='w-[140px] h-[40px] bg-green-400 text-white font-semibold text-sm rounded-md shadow hover:bg-green-500' >Save</button>
+          <button onClick = {handleCancelButton} className="w-[140px] h-[40px] bg-red-400 text-white font-semibold text-sm rounded-md shadow hover:bg-red-500"> Cancel</button>
         </div>
       )}
 
 
 
     <div className="table-wrapper">
-            <table className='document-table'>
+            <table className='document-table outline-none'>
                 <thead>
                     <tr>
                         <th><input type="checkbox" /></th>
@@ -134,12 +124,12 @@ const Document = ({ documents, setDocuments }) => {
                 <td className="border px-4 py-2">{doc.lastModified}</td>
 
                 <td className="px-4 py-2 flex gap-10">
-                  <button onClick={() => handleEditButton(doc) } className="w-[90px] h-[40px] bg-blue-400 text-white-300 font-medium text-sm rounded-md shadow hover:bg-blue-500">
+                  <button onClick={() => handleEditButton(doc) } className="w-[90px] h-[40px] bg-blue-400 text-white font-semibold text-sm rounded-md shadow hover:bg-blue-500">
                       Edit
                   </button>
 
-                    <button onClick={() => handleDelete(doc.id)}  className="p-1 rounded hover:bg-red-100" >
-                      <img src={deleteIcon} alt="Delete" className="h-5 w-5" />
+                    <button onClick={() => handleDelete(doc.id)}  className="w-[90px] h-[40px] bg-red-400 text-white font-semibold text-sm rounded-md shadow hover:bg-red-500">
+                       Delete
                     </button>
                 </td>
               </tr>
