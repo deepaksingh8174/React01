@@ -12,8 +12,7 @@ import settingIcon from '../../assets/setting.png'
 import './sidebar.css'
 
 const Sidebar = () => {
-
-  const sideBarComp = useCallback(() => {
+    
     return (
     <>
     <aside className='sideBar'>  
@@ -66,10 +65,6 @@ const Sidebar = () => {
     </aside>
     </>
   )
-  }, []);
-
-
-  return sideBarComp();
 
   
 }

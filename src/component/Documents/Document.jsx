@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import deleteIcon from '../../assets/delete.png';
 import './document.css';
 
@@ -15,48 +15,94 @@ import './document.css';
   }
 
 
-const Document = ({search, documents, setDocuments}) => {
+const Document = ({ documents, setDocuments }) => {
 
+  const [isEditEnabled, setIsEditEnabled] = useState(false);
 
-const [editingIndexes, setEditingIndexes] = useState([]);
-const [tempNames, setTempNames] = useState({});
+  const [editedData, setEditedData] = useState({
+    id: null,
+    name: '',
+    status: ''
+  });
 
-  const handleEdit = (index, name) => {
-    setEditingIndexes([...editingIndexes, index]);
-    setTempNames({ ...tempNames, [index]: name });
-  };
+  
 
-  const handleSave = (index) => {
-    const updatedDocs = [...documents];
-    updatedDocs[index].name = tempNames[index];
-    setDocuments(updatedDocs);
-
-    setEditingIndexes(editingIndexes.filter((i) => i !== index));
-    const { [index]: removed, ...rest } = tempNames;
-    setTempNames(rest);
-  };
-
-  const handleChange = (index, value) => {
-    setTempNames({ ...tempNames, [index]: value });
-  };
-
- const handleDelete = (index) => {
-    setDocuments(documents.filter((_, i) => i !== index));
+ const handleDelete = (id) => {
+     const totalDocuments = JSON.parse(localStorage.getItem('documents'));
+    const updatedDocuments = totalDocuments.filter((doc) => doc.id !== id);
+    localStorage.setItem('documents', JSON.stringify(updatedDocuments));
+    setDocuments(updatedDocuments);
   };
 
 
-  let filteredDocuments = documents;
-  if (search) {
-      filteredDocuments = documents.filter(doc =>
-        doc.name.toLowerCase().includes(search.toLowerCase())
-    );
+  const handleCancelButton = () => {
+    setIsEditEnabled(!isEditEnabled);
   }
+
+  const handleEditButton = (doc) => {
+    setIsEditEnabled(true);
+    setEditedData({
+      id: doc.id,
+      name: doc.name,
+      status: doc.status
+    });
+    
+  }
+
+  const handleSaveButton = () => {
+    const totalDocuments = JSON.parse(localStorage.getItem('documents'));
+    const updatedDocuments = totalDocuments.map((doc) => {
+      if (doc.id === editedData.id) {
+        return {
+          ...doc,
+          name: editedData.name,
+          status: editedData.status
+        };
+      }
+      return doc;
+    });
+    localStorage.setItem('documents', JSON.stringify(updatedDocuments));
+    setDocuments(updatedDocuments);
+    setIsEditEnabled(false);
+  }
+
+
+
+
+
+
+
+
 
 
  
 
   return (
     <>
+
+     {isEditEnabled && (
+        <div className="mb-8 flex gap-6 items-center">
+          <input className="border px-2 py-2 w-1/2 rounded outline-none"
+            type="text"
+            value={editedData.name}
+            onChange={(e) => setEditedData({...editedData, name: e.target.value})}
+          />
+
+          <select name="status" id="status" className="border px-2 py-2 rounded outline-none"
+            value={editedData.status}
+            onChange={(e) => setEditedData({...editedData, status: e.target.value})}
+          >
+            <option className={getStatusClasses("Pending")} value="Pending">Pending</option>
+            <option className={getStatusClasses("Completed")} value="Completed">Completed</option>
+            <option className={getStatusClasses("Needs Signing")} value="Needs Signing">Needs Signing</option>
+          </select>
+          <button onClick={handleSaveButton} className='w-[140px] h-[40px] bg-blue-400 text-white-300 font-medium text-sm rounded-md shadow hover:bg-blue-500' >Save</button>
+          <button onClick = {handleCancelButton} className="w-[140px] h-[40px] bg-red-400 text-white-300 font-medium text-sm rounded-md shadow hover:bg-red-500"> Cancel</button>
+        </div>
+      )}
+
+
+
     <div className="table-wrapper">
             <table className='document-table'>
                 <thead>
@@ -69,25 +115,15 @@ const [tempNames, setTempNames] = useState({});
                     </tr>
                 </thead>
                 <tbody className='document-body'>
-                   {filteredDocuments.map((doc, index) => {
-            const isEditing = editingIndexes.includes(index);
+                   {documents.map((doc) => {
             return (
-              <tr key={index} className="border-b hover:bg-gray-50">
+              <tr key={doc.id} className="border-b hover:bg-gray-50">
                 <td className="border px-4 py-2 text-center">
                   <input type="checkbox" />
                 </td>
 
                 <td className="border px-4 py-2">
-                  {isEditing ? (
-                    <input
-                      type="text"
-                      value={tempNames[index]}
-                      onChange={(e) => handleChange(index, e.target.value)}
-                      className="border px-2 py-1 rounded w-full focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    />
-                  ) : (
-                    doc.name
-                  )}
+                  {doc.name}
                 </td>
 
                 <td className="border px-4 py-2 cursor-pointer">
@@ -98,31 +134,13 @@ const [tempNames, setTempNames] = useState({});
                 <td className="border px-4 py-2">{doc.lastModified}</td>
 
                 <td className="px-4 py-2 flex gap-10">
-                  {isEditing ? (
-                    <button
-                      onClick={() => handleSave(index)}
-                      className="bg-blue-500 text-white px-3 py-1 rounded hover:bg-blue-600"
-                    >
-                      Save
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleEdit(index, doc.name)}
-                      className="bg-yellow-400 px-3 py-1 rounded hover:bg-yellow-500"
-                    >
+                  <button onClick={() => handleEditButton(doc) } className="w-[90px] h-[40px] bg-blue-400 text-white-300 font-medium text-sm rounded-md shadow hover:bg-blue-500">
                       Edit
-                    </button>
-                  )}
-                  
-                  {!isEditing && (
-                    <button
-                      onClick={() => handleDelete(index)}
-                      className="p-1 rounded hover:bg-red-100"
-                      title="Delete"
-                    >
+                  </button>
+
+                    <button onClick={() => handleDelete(doc.id)}  className="p-1 rounded hover:bg-red-100" >
                       <img src={deleteIcon} alt="Delete" className="h-5 w-5" />
                     </button>
-                  )}
                 </td>
               </tr>
             );
