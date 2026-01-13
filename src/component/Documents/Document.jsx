@@ -86,7 +86,7 @@ const Document = ({ documents, setDocuments }) => {
             <option className={getStatusClasses("Completed")} value="Completed">Completed</option>
             <option className={getStatusClasses("Needs Signing")} value="Needs Signing">Needs Signing</option>
           </select>
-          <button onClick={handleSaveButton} className='w-[140px] h-[40px] bg-green-400 text-white font-semibold text-sm rounded-md shadow hover:bg-green-500' >Save</button>
+          <button disabled={!editedData.name.trim() || !editedData.status.trim()} onClick={handleSaveButton} className='w-[140px] h-[40px] bg-green-400 text-white font-semibold text-sm rounded-md shadow hover:bg-green-500' >Save</button>
           <button onClick = {handleCancelButton} className="w-[140px] h-[40px] bg-red-400 text-white font-semibold text-sm rounded-md shadow hover:bg-red-500"> Cancel</button>
         </div>
       )}
