@@ -35,6 +35,7 @@ const Header = ({setSearch, setDocuments}) => {
         const updatedDocuments = insertDocument(documentName);
         setDocuments(updatedDocuments);
         setAddButtonStatus(!AddButtonStatus);
+        setDocumentName("");
 
     }
 
@@ -54,7 +55,7 @@ const Header = ({setSearch, setDocuments}) => {
             <h1 className='header-h1'> My Documents</h1>
            {AddButtonStatus ? <div className='flex gap-[140px] w-100'>
                 <input onChange={handleDocument} className='w-full h-9 px-3 border-gray-300 rounded text-md shadow-sm outline-none'  type="text" placeholder='Document Name' />
-                <button onClick = {handleSaveButton} className='w-[140px] h-[40px] bg-green-400 text-white font-medium text-sm rounded-md shadow hover:bg-green-500'>Save</button>
+                <button disabled={!documentName.trim()} onClick = {handleSaveButton} className='w-[140px] h-[40px] bg-green-400 text-white font-medium text-sm rounded-md shadow hover:bg-green-500'>Save</button>
             </div> : <button onClick={handleAddButton} className='w-[140px] h-[40px] bg-blue-400 text-white font-medium text-sm rounded-md shadow hover:bg-blue-500'>+ Add Document</button>}, {}
             <div className='search-button'>
               <input  onChange={handleSearch} type="text" placeholder='Search Document' />
