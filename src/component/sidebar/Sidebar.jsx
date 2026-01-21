@@ -1,4 +1,3 @@
-import React, { useCallback } from 'react';
 import chatIcon from '../../assets/chat.png';
 import documentIcon from '../../assets/document.png';
 import helpIcon from '../../assets/help.png';

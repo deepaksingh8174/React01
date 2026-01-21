@@ -10,6 +10,7 @@ const DocumentWrapper = () => {
     const localstorageData = localStorage.getItem("documents");
 
     if (localstorageData) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setDocuments(JSON.parse(localstorageData));
     }
   }, []);
