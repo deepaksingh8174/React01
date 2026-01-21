@@ -1,29 +1,22 @@
-import {useEffect, useState} from 'react'
-import Header from '../Header/Header'
-import Document from '../Documents/Document'
-
-
-
-
+import { useEffect, useState } from "react";
+import Header from "../Header/Header";
+import Document from "../Documents/Document";
 
 const DocumentWrapper = () => {
-    const [search, setSearch] = useState("");
-    const [documents, setDocuments] = useState([]);
+  const [search, setSearch] = useState("");
+  const [documents, setDocuments] = useState([]);
 
+  useEffect(() => {
+    const localstorageData = localStorage.getItem("documents");
 
-    useEffect(() => {
-       const localstorageData = localStorage.getItem("documents");  
+    if (localstorageData) {
+      setDocuments(JSON.parse(localstorageData));
+    }
+  }, []);
 
-        if(localstorageData){
-          setDocuments(JSON.parse(localstorageData));
-        }
-
-    }, []);
-
-
-    const filteredDocuments = search
-    ? documents.filter(doc =>
-        doc.name.toLowerCase().includes(search.toLowerCase())
+  const filteredDocuments = search
+    ? documents.filter((doc) =>
+        doc.name.toLowerCase().includes(search.toLowerCase()),
       )
     : documents;
 
@@ -32,7 +25,7 @@ const DocumentWrapper = () => {
       <Header setSearch={setSearch} setDocuments={setDocuments} />
       <Document documents={filteredDocuments} setDocuments={setDocuments} />
     </div>
-  )
-}
+  );
+};
 
-export default DocumentWrapper
+export default DocumentWrapper;

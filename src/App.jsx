@@ -1,18 +1,15 @@
-import { Sidebar,DocumentWrapper } from "./component"
-import './App.css'
-
-
+import { Sidebar, DocumentWrapper } from './component';
+import './App.css';
 
 function App() {
-
   return (
     <>
-    <div className="main-app">
-      <Sidebar />
-      <DocumentWrapper />
-    </div>
+      <div className="main-app">
+        <Sidebar />
+        <DocumentWrapper />
+      </div>
     </>
-  )
+  );
 }
 
-export default App
+export default App;

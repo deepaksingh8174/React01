@@ -1,19 +1,17 @@
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
-
-.sideBar{
-width: 371px;
- height: 100vh; 
-opacity: 1;
-border-width: 1px;
-background-color: #FFFFFF;
-padding-left: 35px;
+.sideBar {
+  width: 371px;
+  height: 100vh;
+  opacity: 1;
+  border-width: 1px;
+  background-color: #ffffff;
+  padding-left: 35px;
 }
-
 
 .logo {
   width: 190px;
@@ -43,61 +41,56 @@ padding-left: 35px;
 }
 
 .menu-list-item {
-    height: 51px;
-    width: 286px;
-    /* border: 3px solid #000000; */
-    text-align: center;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding-left: 20px;
+  height: 51px;
+  width: 286px;
+  /* border: 3px solid #000000; */
+  text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 20px;
 }
 
 .contact {
   padding-top: 15px;
   /* border: 3px solid #000000; */
-  padding: 33px;    
-
+  padding: 33px;
 }
 
 .contact button {
   width: 97px;
   height: 34px;
-  background-color: #1F4451;
-  color: #FFFFFF;
+  background-color: #1f4451;
+  color: #ffffff;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 12px;
-  font-weight:600;
+  font-weight: 600;
   align-items: center;
 }
 
 .contact-heading {
-    font-size: 24px;
-    font-weight: 545;
-    color: #1F4451;
-    line-height: 120%;
-    margin: 10px 0px;
-    /* border: 3px solid #000000; */
+  font-size: 24px;
+  font-weight: 545;
+  color: #1f4451;
+  line-height: 120%;
+  margin: 10px 0px;
+  /* border: 3px solid #000000; */
 }
 
 .contact-paragraph {
-    font-size: 16px;
-    font-weight: 400;
-    color: #626D82;
-    line-height: 140%;
-    /* border: 3px solid #000000; */
-    margin-bottom: 20px;
+  font-size: 16px;
+  font-weight: 400;
+  color: #626d82;
+  line-height: 140%;
+  /* border: 3px solid #000000; */
+  margin-bottom: 20px;
 }
 
 .below-section {
-    display: flex;
-    flex-direction: column;
-    height: calc(100vh - 200px);
-    justify-content: space-between;
-    
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 200px);
+  justify-content: space-between;
 }
-
-
-
