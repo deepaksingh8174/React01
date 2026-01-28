@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import useDocument from "../../hooks/useDocument";
 import "./document.css";
-import { deleteDocument, editDocument } from "../../utils/util";
+
 
 const getStatusClasses = (status) => {
   switch (status.toLowerCase()) {
@@ -24,36 +24,17 @@ const getbuttonStatus = (status) => {
   }
 };
 
-const Document = ({ documents }) => {
-  const [isEditEnabled, setIsEditEnabled] = useState(false);
-
-  const [editedData, setEditedData] = useState({
-    id: null,
-    name: "",
-    status: "",
-  });
-
-  const handleDelete = (id) => {
-    deleteDocument(id);
-  };
-
-  const handleCancelButton = () => {
-    setIsEditEnabled(!isEditEnabled);
-  };
-
-  const handleEditButton = (doc) => {
-    setIsEditEnabled(true);
-    setEditedData({
-      id: doc.id,
-      name: doc.name,
-      status: doc.status,
-    });
-  };
-
-  const handleSaveButton = () => {
-    editDocument(editedData);
-    setIsEditEnabled(false);
-  };
+const Document = ({ documents, refetchDocs }) => {
+  
+  const {
+          handleDelete,
+          handleCancelButton,
+          handleEditButton,
+          handleSaveButton,
+          isEditEnabled,
+          editedData,
+          setEditedData
+        } = useDocument(refetchDocs)
 
   return (
     <>

@@ -1,31 +1,17 @@
-import React, { useState } from 'react';
 import './header.css';
 import searchIcon from '../../assets/search.png';
 import rightArrow from '../../assets/rightIcon.png';
-import { insertDocument } from '../../utils/util';
+import useHeader from '../../hooks/useHeader';
 
-
-const Header = ({ setSearch }) => {
-  const [AddButtonStatus, setAddButtonStatus] = useState(false);
-  const [documentName, setDocumentName] = useState('');
-
-  const handleDocument = (e) => {
-    setDocumentName(e.target.value);
-  };
-
-  const handleAddButton = () => {
-    setAddButtonStatus(!AddButtonStatus);
-  };
-
-  const handleSaveButton = () => {
-     insertDocument(documentName);
-    setAddButtonStatus(!AddButtonStatus);
-    setDocumentName('');
-  };
-
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
-  };
+const Header = ({ setSearch, refetchDocs }) => {
+  const {
+    handleDocument,
+    handleAddButton,
+    handleSaveButton,
+    handleSearch,
+    AddButtonStatus,
+    documentName
+  } = useHeader(setSearch, refetchDocs);
 
   return (
     <header className="header">

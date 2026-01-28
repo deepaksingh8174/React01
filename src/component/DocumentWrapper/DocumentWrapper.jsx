@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Header from "../Header/Header";
 import Document from "../Documents/Document";
 import { getDocuments } from "../../utils/util";
@@ -7,21 +7,33 @@ const DocumentWrapper = () => {
   const [search, setSearch] = useState("");
   const [documents, setDocuments] = useState([]);
 
-  useEffect(() => {
-    const docs = getDocuments();
-    setDocuments(docs);
-  }, [documents]);
+    const refetchDocs = ()=>{
+     const docs = getDocuments();
+     setDocuments(docs);
+  }
 
-  const filteredDocuments = search
+
+    useEffect(() => {
+          refetchDocs()
+  }, []);
+
+
+
+  const filteredDocuments = useMemo((() => {
+   return search
     ? documents.filter((doc) =>
         doc.name.toLowerCase().includes(search.toLowerCase()),
       )
     : documents;
 
+  }), [search, documents])
+  
+  
+
   return (
     <div>
-      <Header setSearch={setSearch} />
-      <Document documents={filteredDocuments} />
+      <Header setSearch={setSearch} refetchDocs = {refetchDocs} />
+      <Document documents={filteredDocuments} refetchDocs = {refetchDocs} />
     </div>
   );
 };
