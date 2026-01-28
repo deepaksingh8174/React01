@@ -2,32 +2,10 @@ import React, { useState } from 'react';
 import './header.css';
 import searchIcon from '../../assets/search.png';
 import rightArrow from '../../assets/rightIcon.png';
+import { insertDocument } from '../../utils/util';
 
-function insertDocument(docName) {
-  const existingDocuments = JSON.parse(localStorage.getItem('documents')) || [];
-  const newDocument = {
-    id: Math.floor(Math.random() * 100),
-    name: docName,
-    status: 'Pending',
-    lastModified: new Date()
-      .toLocaleDateString('en-IN', {
-        day: 'numeric',
-        month: 'numeric',
-        year: 'numeric',
-        hour: 'numeric',
-        minute: '2-digit',
-        hour12: true,
-      })
-      .replace(',', '')
-      .toLowerCase(),
-  };
-  const updatedDocuments = [...existingDocuments, newDocument];
-  localStorage.setItem('documents', JSON.stringify(updatedDocuments));
 
-  return updatedDocuments;
-}
-
-const Header = ({ setSearch, setDocuments }) => {
+const Header = ({ setSearch }) => {
   const [AddButtonStatus, setAddButtonStatus] = useState(false);
   const [documentName, setDocumentName] = useState('');
 
@@ -40,8 +18,7 @@ const Header = ({ setSearch, setDocuments }) => {
   };
 
   const handleSaveButton = () => {
-    const updatedDocuments = insertDocument(documentName);
-    setDocuments(updatedDocuments);
+     insertDocument(documentName);
     setAddButtonStatus(!AddButtonStatus);
     setDocumentName('');
   };

@@ -1,19 +1,16 @@
 import { useEffect, useState } from "react";
 import Header from "../Header/Header";
 import Document from "../Documents/Document";
+import { getDocuments } from "../../utils/util";
 
 const DocumentWrapper = () => {
   const [search, setSearch] = useState("");
   const [documents, setDocuments] = useState([]);
 
   useEffect(() => {
-    const localstorageData = localStorage.getItem("documents");
-
-    if (localstorageData) {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
-      setDocuments(JSON.parse(localstorageData));
-    }
-  }, []);
+    const docs = getDocuments();
+    setDocuments(docs);
+  }, [documents]);
 
   const filteredDocuments = search
     ? documents.filter((doc) =>
@@ -23,8 +20,8 @@ const DocumentWrapper = () => {
 
   return (
     <div>
-      <Header setSearch={setSearch} setDocuments={setDocuments} />
-      <Document documents={filteredDocuments} setDocuments={setDocuments} />
+      <Header setSearch={setSearch} />
+      <Document documents={filteredDocuments} />
     </div>
   );
 };

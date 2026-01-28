@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./document.css";
+import { deleteDocument, editDocument } from "../../utils/util";
 
 const getStatusClasses = (status) => {
   switch (status.toLowerCase()) {
@@ -23,7 +24,7 @@ const getbuttonStatus = (status) => {
   }
 };
 
-const Document = ({ documents, setDocuments }) => {
+const Document = ({ documents }) => {
   const [isEditEnabled, setIsEditEnabled] = useState(false);
 
   const [editedData, setEditedData] = useState({
@@ -33,10 +34,7 @@ const Document = ({ documents, setDocuments }) => {
   });
 
   const handleDelete = (id) => {
-    const totalDocuments = JSON.parse(localStorage.getItem("documents"));
-    const updatedDocuments = totalDocuments.filter((doc) => doc.id !== id);
-    localStorage.setItem("documents", JSON.stringify(updatedDocuments));
-    setDocuments(updatedDocuments);
+    deleteDocument(id);
   };
 
   const handleCancelButton = () => {
@@ -53,30 +51,7 @@ const Document = ({ documents, setDocuments }) => {
   };
 
   const handleSaveButton = () => {
-    const totalDocuments = JSON.parse(localStorage.getItem("documents"));
-    const updatedDocuments = totalDocuments.map((doc) => {
-      if (doc.id === editedData.id) {
-        return {
-          ...doc,
-          name: editedData.name,
-          status: editedData.status,
-          lastModified: new Date()
-            .toLocaleDateString("en-IN", {
-              day: "numeric",
-              month: "numeric",
-              year: "numeric",
-              hour: "numeric",
-              minute: "2-digit",
-              hour12: true,
-            })
-            .replace(",", "")
-            .toLowerCase(),
-        };
-      }
-      return doc;
-    });
-    localStorage.setItem("documents", JSON.stringify(updatedDocuments));
-    setDocuments(updatedDocuments);
+    editDocument(editedData);
     setIsEditEnabled(false);
   };
 
